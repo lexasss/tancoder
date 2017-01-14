@@ -23,6 +23,10 @@ let state = {
     angle: 0
 };
 
+function log(...args) {
+//	console.log(...args);
+}
+
 function preload () {
     game.load.image( 'ground', 'assets/ground.png' );
     game.load.image( 'stone', 'assets/stone.png' );
@@ -81,6 +85,10 @@ function update () {
     player.body.velocity.x = state.velocity.x;
     player.body.velocity.y = state.velocity.y;
     player.body.angularVelocity = state.angularVelocity;
+    if (state.velocity.x || state.velocity.y)
+		log('f', player.x, player.y);
+    if (state.angularVelocity)
+		log('r', player.angle);
 
     const hitStones = game.physics.arcade.collide( player, stones );
     const hitBoxes = game.physics.arcade.collide( player, boxes );
@@ -98,17 +106,21 @@ function isExecutionDestinationReached() {
 		    setTimeout( () => {
 				player.x = final.x;
 				player.y = final.y;
+				log('forward-final:', player.x, player.y);
 		    }, 50);
+			log('forward-finished');
 			return true;
 		}
 	}
 	else if (state.angularVelocity) {
-		const diff = Math.abs( state.angle - player.angle);
-		if ( diff < 3 || diff > 180) {
-			const final = state.angle
+		const diff = Math.abs( Math.sin( state.angle * Math.PI / 180 ) - Math.sin( player.angle * Math.PI / 180 ) );
+		if ( diff < 0.05) {
+			const final = state.angle;
 		    setTimeout( () => {
 				player.angle = final;
+				log('rotate-final:', player.angle);
 		    }, 50);
+			log('rotate-finished');
 			return true;
 		}
 	}
@@ -169,12 +181,14 @@ module.exports = {
 				state.velocity = { x: command.velocity, y: 0 };
 				state.location.x += TILE_SIZE;
 			}
+			log('forward from', player.x, player.y, 'to', state.location.x, state.location.y);
 		}
 		else if (command.angularVelocity) {
 	        state.angularVelocity = command.angularVelocity;
 	        state.angle += state.angularVelocity > 0 ? 90 : -90;
 	        while (state.angle > 180) { state.angle -= 360 };
 	        while (state.angle <-180) { state.angle += 360 };
+			log('rotate from', player.angle, 'to', state.angle);
 		}
 		else if (command.name === 'fire') {
 			let angle = player.angle - 90;

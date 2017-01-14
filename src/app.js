@@ -16,6 +16,12 @@ const game = require('./js/game');
 // Variables
 
 let levelID = 0;
+if (window.location.hash.length > 1) {
+    try {
+        levelID = Math.max( Math.min( +window.location.hash.substring(1) - 1, levels.length), 0 );
+    }
+    catch (ex) { }
+}
 
 
 // Initialization
