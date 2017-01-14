@@ -1,0 +1,55 @@
+@mainColor: #844706;
+
+#instruction {
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+//    border: 1px solid @color;
+
+    .title {
+        color: @mainColor;
+        margin-top: 0;
+        padding-top: 0.3em;
+        padding-left: 0.5em;
+    }
+
+    .inline-code {
+        background-color: #ddd;
+        color: #444;
+        font-family: 'Roboto Mono', monospace;
+        padding: 0 0.5em;
+        border-radius: 5px;
+    }
+
+    .text {
+        border-radius: 5px;
+        background-color: @mainColor;
+        color: #ffd;
+        padding: 0.3em 0.5em;
+        line-height: 1.6em;
+
+        pre {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 18px;
+            padding-left: 1em; 
+            maring-top: 0.3em;
+            maring-bottom: 0.3em;
+        }
+    }
+
+    .command-list-title {
+        color: @mainColor;
+        padding-left: 0.5em;
+    }
+
+    .command-list {
+        background-color: @mainColor;
+        color: #ffd;
+        padding: 0.3em 0.5em;
+        line-height: 1.4em;
+
+        .command {
+
+        }
+    }
+}

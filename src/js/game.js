@@ -1,0 +1,260 @@
+const WIDTH = 18;
+const HEIGHT = 16;
+const TILE_SIZE = 48;
+const ANIMATION_RATE = 5; // frames per s
+const CONGRAT_SIZE = { x: 320, y: 64 } ;
+
+let game;
+let player;
+let stones;
+let boxes;
+let targets;
+let congratulation;
+let weapon;
+
+let gameCreatedCallback;
+let executionFinishedCallback;
+//let completedText;
+
+let state = {
+    velocity: { x: 0, y: 0 },
+    location: { x: 0, y: 0 },
+    angularVelocity: 0,
+    angle: 0
+};
+
+function preload () {
+    game.load.image( 'ground', 'assets/ground.png' );
+    game.load.image( 'stone', 'assets/stone.png' );
+    game.load.image( 'box', 'assets/box.png' );
+    game.load.image( 'bullet', 'assets/bullet.png' );
+    game.load.spritesheet( 'congratulation', 'assets/congrats.png', CONGRAT_SIZE.x, CONGRAT_SIZE.y );
+    game.load.spritesheet( 'target', 'assets/target.png', TILE_SIZE, TILE_SIZE );
+    game.load.spritesheet( 'tank', 'assets/tank.png', TILE_SIZE, TILE_SIZE );
+
+    CONGRAT_SIZE.x *= 2;
+    CONGRAT_SIZE.y *= 2;
+}
+
+function create () {
+    game.physics.startSystem( Phaser.Physics.ARCADE );
+    
+    game.add.tileSprite( 0, 0, WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE, 'ground' );
+    
+    stones = game.add.group();
+    stones.enableBody = true;
+    
+    boxes = game.add.group();
+    boxes.enableBody = true;
+    
+    targets = game.add.group();
+    targets.enableBody = true;
+    
+    congratulation = game.add.image( (game.width - CONGRAT_SIZE.x) / 2, (game.height - CONGRAT_SIZE.y) / 2, 'congratulation' );
+    congratulation.width = CONGRAT_SIZE.x;
+    congratulation.height = CONGRAT_SIZE.y;
+    congratulation.sendToBack();
+    
+    player = game.add.sprite( TILE_SIZE, TILE_SIZE, 'tank' );
+    
+    player.animations.add( 'forward',  [0, 1, 2], ANIMATION_RATE, true );
+    
+    game.physics.arcade.enable( player );
+    player.body.collideWorldBounds = true;
+    player.anchor.x = 0.5;
+    player.anchor.y = 0.5;
+
+    weapon = game.add.weapon( -1, 'bullet' );
+    weapon.trackSprite( player );
+    weapon.bulletSpeed = 500;
+
+    //scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+    gameCreatedCallback();
+}
+
+function update () {
+    if (isExecutionDestinationReached()) {
+    	finishExecution();
+    }
+
+    player.body.velocity.x = state.velocity.x;
+    player.body.velocity.y = state.velocity.y;
+    player.body.angularVelocity = state.angularVelocity;
+
+    const hitStones = game.physics.arcade.collide( player, stones );
+    const hitBoxes = game.physics.arcade.collide( player, boxes );
+    game.physics.arcade.overlap( weapon.bullets, boxes, (bullet, box) => {
+    	bullet.kill();
+    	box.kill();
+    } );
+    game.physics.arcade.overlap( player, targets, convertTarget, checkPlayerAndTargetCollisin );
+}
+
+function isExecutionDestinationReached() {
+	if (state.velocity.x || state.velocity.y) {
+		if (Math.abs( state.location.x - player.x) < 3 && Math.abs( state.location.y - player.y) < 3) {
+			const final = { x: state.location.x, y : state.location.y };
+		    setTimeout( () => {
+				player.x = final.x;
+				player.y = final.y;
+		    }, 50);
+			return true;
+		}
+	}
+	else if (state.angularVelocity) {
+		const diff = Math.abs( state.angle - player.angle);
+		if ( diff < 3 || diff > 180) {
+			const final = state.angle
+		    setTimeout( () => {
+				player.angle = final;
+		    }, 50);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function convertTarget( player, target ) {
+    target.frame = 1;
+}
+
+function checkPlayerAndTargetCollisin( player, target ) {
+    return player.body.hitTest( target.centerX, target.centerY );
+}
+
+function finishExecution() {
+    state.velocity = { x: 0, y: 0 };
+    state.angularVelocity = 0;
+
+    player.animations.stop();
+
+    executionFinishedCallback();
+    executionFinishedCallback = undefined;
+}
+
+module.exports = {
+	init: function( elemID ) {
+		return new Promise( (resolve, reject) => {
+			gameCreatedCallback = resolve;
+			game = new Phaser.Game( 
+			 	WIDTH * TILE_SIZE, 
+			 	HEIGHT * TILE_SIZE, 
+			 	Phaser.CANVAS, 
+			 	elemID, { 
+		 			preload: preload, 
+		 			create: create, 
+		 			update: update
+		 		}
+	 		);
+		});
+	},
+
+	execute: function( command, done ) {
+		if (command.velocity) {
+			if (player.angle < -135 || player.angle > 135) {
+				state.velocity = { x: 0, y: command.velocity };
+				state.location.y += TILE_SIZE;
+			}
+			else if (player.angle < -45) {
+				state.velocity = { x: -command.velocity, y: 0 };
+				state.location.x -= TILE_SIZE;
+			}
+			else if (player.angle < 45) {
+				state.velocity = { x: 0, y: -command.velocity };
+				state.location.y -= TILE_SIZE;
+			}
+			else {
+				state.velocity = { x: command.velocity, y: 0 };
+				state.location.x += TILE_SIZE;
+			}
+		}
+		else if (command.angularVelocity) {
+	        state.angularVelocity = command.angularVelocity;
+	        state.angle += state.angularVelocity > 0 ? 90 : -90;
+	        while (state.angle > 180) { state.angle -= 360 };
+	        while (state.angle <-180) { state.angle += 360 };
+		}
+		else if (command.name === 'fire') {
+			let angle = player.angle - 90;
+			while (angle < 0) { angle += 360; }
+			weapon.trackOffset.x = TILE_SIZE / 2 * Math.sin( player.rotation );
+			weapon.trackOffset.y = -TILE_SIZE / 2 * Math.cos( player.rotation );
+		    weapon.fireAngle = angle;
+			weapon.fire();
+
+			setTimeout( () => {
+				finishExecution();
+			}, command.duration );
+		}
+		else {
+			console.log( 'game.execute: invalid command' );
+			return;
+		}
+
+	    if (player.animations.getAnimation( command.name )) {
+	        player.animations.play( command.name );
+	    }
+	    
+	    executionFinishedCallback = done;
+	},
+
+    isLevelCompleted: function() {
+    	let allTargetVisited = true;
+	    targets.forEach( target => {
+	        allTargetVisited = allTargetVisited && target.frame === 1;
+	    }, this);
+
+	    return allTargetVisited;
+	},
+
+	showCongratulation: function() {
+		return new Promise( (resolve, reject) => {
+			setTimeout( () => {
+				congratulation.frame = Math.floor( Math.random() * (game.cache.getFrameCount( congratulation.key ) - 1) );
+			    congratulation.bringToTop();
+				setTimeout( () => {
+				    congratulation.sendToBack();
+				    resolve();
+				}, 2000 );
+			}, 1000 );
+		});
+	},
+
+	finish: function() {
+		return new Promise( (resolve, reject) => {
+			setTimeout( () => {
+				congratulation.frame = game.cache.getFrameCount( congratulation.key ) - 1;
+			    congratulation.bringToTop();
+				setTimeout( () => {
+				    resolve();
+				}, 2000);
+			}, 1000);
+		});
+	},
+
+	resetLevel: function( startState ) {
+		state.location = {
+			x: (startState.cell.x + 0.5) * TILE_SIZE,
+			y: (startState.cell.y + 0.5) * TILE_SIZE,
+		};
+		state.angle = startState.angle;
+
+        player.x = state.location.x;
+	    player.y = state.location.y;
+
+	    player.angle = state.angle;
+	},
+
+	sprites: function() {
+		return {
+			player,
+			stones,
+			boxes,
+			targets
+		};
+	},
+
+	tileSize: TILE_SIZE
+};

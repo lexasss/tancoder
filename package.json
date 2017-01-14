@@ -1,0 +1,28 @@
+{
+  "name": "Tancoder",
+  "version": "0.0.1",
+  "description": "Learn JavaScript by writing scripts to move a tank",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lexasss",
+  "license": "MIT",
+  "dependencies": {
+    "phaser": "^2.6.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.6.1",
+    "clean-webpack-plugin": "^0.1.14",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.1",
+    "file-loader": "^0.9.0",
+    "html-webpack-plugin": "^2.25.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "postcss-loader": "^1.2.1",
+    "pug-html-loader": "^1.0.10",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.14.0"
+  }
+}

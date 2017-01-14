@@ -1,0 +1,54 @@
+@mainColor: #844706;
+
+#code {
+    position: relative;
+    font-size: 18px;
+    height: 100%;
+    box-sizing: border-box;
+
+    .title {
+        color: @mainColor;
+        font-family: 'Roboto Condensed', sans-serif;
+        margin-top: 0;
+        padding-top: 0.3em;
+        padding-left: 0.5em;
+    }
+
+    textarea {
+        background-color: #fec;
+        color: @mainColor;
+        font-family: 'Oxygen Mono', monospace;
+
+        padding: 0.3em;
+        box-sizing: border-box;
+        border: 2px solid @mainColor;
+
+        position: absolute;
+        width: 100%;
+        height: ~"calc(100% - 5em)";
+    }
+
+    .error {
+        position: absolute;
+        width: 100%;
+        bottom: 1.3em;
+        font-size: 16px;
+        max-height: 70%;
+        overflow-y: auto;
+
+        &.hidden {
+            display: none !important;
+        }
+
+        .error-msg {
+            font-size: smaller;
+        }
+    }
+
+    .buttons {
+        font-family: 'Roboto', sans-serif;
+        position: absolute;
+        display: block !important;
+        bottom: 0px;
+    }
+}
