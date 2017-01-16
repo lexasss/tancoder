@@ -67,8 +67,8 @@ function createLevel( id ) {
 function resetLevel() {
     runner.stop();
     const level = levels[ levelID ];
-    level.reset( game.sprites(), game.tileSize );
     game.resetLevel( level.startState );
+    level.reset( game.sprites(), game.tileSize );
 }
 
 // Exports

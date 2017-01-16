@@ -55,6 +55,12 @@ class Level {
 	            }
 	        });
 	    });
+
+	    sprites.targets.forEach( target => {
+	    	setTimeout( () => {
+	    		target.frame = 0;
+	    	}, 50);
+	    }, this );
 	}
 }
 

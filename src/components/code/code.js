@@ -15,6 +15,7 @@ let stop;
 
 editor.addEventListener( 'focus', e => {
     error.classList.add( 'hidden' );
+    editor.classList.remove( 'errorLine' );
 });
 
 editor.addEventListener( 'input', e => {
@@ -69,6 +70,14 @@ function updateButtons() {
     toggle.textContent = isRunning ? 'Стоп' : 'Запуск';
 }
 
+function scrollToLine( line ) {
+    line = Math.max( line - 1, 0 );
+    const topOffset = line * 25;
+    if (topOffset < editor.scrollTop || topOffset > editor.scrollTop + editor.clientHeight) {
+        editor.scrollTop = topOffset;
+    }
+}
+
 updateButtons();
 
 module.exports = {
@@ -101,6 +110,15 @@ module.exports = {
     error: function( err ) {
         let msg = err.lineNumber !== undefined ? `Строчка #${err.lineNumber}: ` : '';
         errorMsg.textContent = msg + err.message;
-        error.classList.remove( 'hidden' );
+        //error.classList.remove( 'hidden' );
+
+        if (err.lineNumber !== undefined) {
+            scrollToLine( err.lineNumber - 1 );
+
+            editor.classList.add( 'errorLine' );
+            editor.style.backgroundPosition = 'left ' + (25 * (err.lineNumber - 0.7) - editor.scrollTop) + 'px';
+
+            //errorLine.style.top = editor.offsetTop - editor.scrollTop + 25 * (err.lineNumber - 0.7) + 'px';
+        }
     }
 };

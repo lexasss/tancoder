@@ -166,11 +166,11 @@ module.exports = [
         'b                b' + '\n' +
         'b        t       b' + '\n' +
         'b                b' + '\n' +
-        'bbbbbbbbbbbbbb  bb' + '\n' +
+        'bbbbbbbbbbbbbbb bb' + '\n' +
         'b                b' + '\n' +
         'bb bbbbbbbbbbbbbbb' + '\n' +
         'b                b' + '\n' +
-        'bbbbbbbbbbbbbb  bb' + '\n' +
+        'bbbbbbbbbbbbbbb bb' + '\n' +
         'b                b' + '\n' +
         'b        p       b' + '\n' +
         'b                b' + '\n' +
@@ -179,7 +179,8 @@ module.exports = [
         'bbbbbbbbbbbbbbbbbb',
 
         '<p>На прошлом уровне ящики помешали проехать к кружку напрямую, и их пришлось объехать.\
-        Но программа не будет очень длинной, если помнить для чего нужны числа между скобок.\
+        Но программа не должна была получиться очень длинной, если ты записывал число ходов между скобок для команды\
+        <span class="inline-code">forward</span>\
         <p>Как ты помнишь, ниже есть справочник с командами.\
         В нём между скобкок у каждой команды написано <span class="inline-code">разы = 1</span>.\
         Это напоминание, что число между скобками – это <span class="inline-code">разы</span>,\
@@ -201,11 +202,11 @@ module.exports = [
         'b                b' + '\n' +
         'b        t       b' + '\n' +
         'b                b' + '\n' +
-        'bbbbbbbbbbbbbb  bb' + '\n' +
+        'bbbbbbbbbbbbbbb bb' + '\n' +
         'b                b' + '\n' +
         'bb bbbbbbbbbbbbbbb' + '\n' +
         'b                b' + '\n' +
-        'bbbbbbbbbbbbbb  bb' + '\n' +
+        'bbbbbbbbbbbbbbb bb' + '\n' +
         'b                b' + '\n' +
         'b        p       b' + '\n' +
         'b                b' + '\n' +
@@ -215,7 +216,7 @@ module.exports = [
 
         '<p>Танк умеет стрелять с помощью команды <span class="inline-code">fire</span>.\
         От выстрелов ящики разрушаются.\
-        Помни, что одной командой <span class="inline-code">fire</span> можно выстрелить несколько раз\
+        Oдной командой <span class="inline-code">fire</span> можно выстрелить несколько раз\
         если ей записать число между скобок.\
         <p>Наверное, ты легко догадаешься в какие ящики надо стрелять чтобы проложить короткий путь к кружку,\
         а значит, программа должна получиться намного короче чем в прошлый раз.',

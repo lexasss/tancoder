@@ -1,4 +1,5 @@
 @mainColor: #844706;
+@lineSize: 25px;
 
 #code {
     position: relative;
@@ -16,8 +17,10 @@
 
     textarea {
         background-color: #fec;
+
         color: @mainColor;
         font-family: 'Oxygen Mono', monospace;
+        line-height: @lineSize;
 
         padding: 0.3em;
         box-sizing: border-box;
@@ -26,6 +29,13 @@
         position: absolute;
         width: 100%;
         height: ~"calc(100% - 5em)";
+
+        &.errorLine {
+            background-image: linear-gradient(#ff8080, #ff8080);
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-size: 100% @lineSize;
+        }
     }
 
     .error {

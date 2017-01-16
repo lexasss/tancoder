@@ -16,11 +16,17 @@ let gameCreatedCallback;
 let executionFinishedCallback;
 //let completedText;
 
-let state = {
+const state = {
     velocity: { x: 0, y: 0 },
     location: { x: 0, y: 0 },
     angularVelocity: 0,
     angle: 0
+};
+
+const timers = {
+	moveCorrection: null,
+	rotationCorrection: null,
+	fire: null
 };
 
 function log(...args) {
@@ -103,9 +109,10 @@ function isExecutionDestinationReached() {
 	if (state.velocity.x || state.velocity.y) {
 		if (Math.abs( state.location.x - player.x) < 3 && Math.abs( state.location.y - player.y) < 3) {
 			const final = { x: state.location.x, y : state.location.y };
-		    setTimeout( () => {
+		    timers.moveCorrection = setTimeout( () => {
 				player.x = final.x;
 				player.y = final.y;
+				timers.moveCorrection = null;
 				log('forward-final:', player.x, player.y);
 		    }, 50);
 			log('forward-finished');
@@ -116,8 +123,9 @@ function isExecutionDestinationReached() {
 		const diff = Math.abs( Math.sin( state.angle * Math.PI / 180 ) - Math.sin( player.angle * Math.PI / 180 ) );
 		if ( diff < 0.05) {
 			const final = state.angle;
-		    setTimeout( () => {
+		    timers.rotationCorrection = setTimeout( () => {
 				player.angle = final;
+				timers.rotationCorrection = null;
 				log('rotate-final:', player.angle);
 		    }, 50);
 			log('rotate-finished');
@@ -165,6 +173,11 @@ module.exports = {
 
 	execute: function( command, done ) {
 		if (command.velocity) {
+			if (timers.moveCorrection) {
+				clearTimeout( timers.moveCorrection );
+				timers.moveCorrection = null;
+			}
+
 			if (player.angle < -135 || player.angle > 135) {
 				state.velocity = { x: 0, y: command.velocity };
 				state.location.y += TILE_SIZE;
@@ -184,6 +197,11 @@ module.exports = {
 			log('forward from', player.x, player.y, 'to', state.location.x, state.location.y);
 		}
 		else if (command.angularVelocity) {
+			if (timers.rotationCorrection) {
+				clearTimeout( timers.rotationCorrection );
+				timers.rotationCorrection = null;
+			}
+
 	        state.angularVelocity = command.angularVelocity;
 	        state.angle += state.angularVelocity > 0 ? 90 : -90;
 	        while (state.angle > 180) { state.angle -= 360 };
@@ -198,7 +216,8 @@ module.exports = {
 		    weapon.fireAngle = angle;
 			weapon.fire();
 
-			setTimeout( () => {
+			timers.fire = setTimeout( () => {
+				timers.fire = null;
 				finishExecution();
 			}, command.duration );
 		}
