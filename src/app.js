@@ -26,7 +26,9 @@ if (window.location.hash.length > 1) {
 
 // Initialization
 
-hljs.initHighlightingOnLoad();
+if (this.hljs) {
+    hljs.initHighlightingOnLoad();
+}
 
 code.listen( dispatcher.parse, runner.run, resetLevel );
 

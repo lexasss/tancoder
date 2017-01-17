@@ -4,6 +4,8 @@ const TILE_SIZE = 48;
 const ANIMATION_RATE = 5; // frames per s
 const CONGRAT_SIZE = { x: 320, y: 64 } ;
 
+const graphicsPath = 'assets/graphics/';
+
 let game;
 let player;
 let stones;
@@ -34,13 +36,13 @@ function log(...args) {
 }
 
 function preload () {
-    game.load.image( 'ground', 'assets/ground.png' );
-    game.load.image( 'stone', 'assets/stone.png' );
-    game.load.image( 'box', 'assets/box.png' );
-    game.load.image( 'bullet', 'assets/bullet.png' );
-    game.load.spritesheet( 'congratulation', 'assets/congrats.png', CONGRAT_SIZE.x, CONGRAT_SIZE.y );
-    game.load.spritesheet( 'target', 'assets/target.png', TILE_SIZE, TILE_SIZE );
-    game.load.spritesheet( 'tank', 'assets/tank.png', TILE_SIZE, TILE_SIZE );
+    game.load.image( 'ground', graphicsPath + 'ground.png' );
+    game.load.image( 'stone', graphicsPath + 'stone.png' );
+    game.load.image( 'box', graphicsPath + 'box.png' );
+    game.load.image( 'bullet', graphicsPath + 'bullet.png' );
+    game.load.spritesheet( 'congratulation', graphicsPath + 'congrats.png', CONGRAT_SIZE.x, CONGRAT_SIZE.y );
+    game.load.spritesheet( 'target', graphicsPath + 'target.png', TILE_SIZE, TILE_SIZE );
+    game.load.spritesheet( 'tank', graphicsPath + 'tank.png', TILE_SIZE, TILE_SIZE );
 
     CONGRAT_SIZE.x *= 2;
     CONGRAT_SIZE.y *= 2;
@@ -48,27 +50,27 @@ function preload () {
 
 function create () {
     game.physics.startSystem( Phaser.Physics.ARCADE );
-    
+
     game.add.tileSprite( 0, 0, WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE, 'ground' );
-    
+
     stones = game.add.group();
     stones.enableBody = true;
-    
+
     boxes = game.add.group();
     boxes.enableBody = true;
-    
+
     targets = game.add.group();
     targets.enableBody = true;
-    
+
     congratulation = game.add.image( (game.width - CONGRAT_SIZE.x) / 2, (game.height - CONGRAT_SIZE.y) / 2, 'congratulation' );
     congratulation.width = CONGRAT_SIZE.x;
     congratulation.height = CONGRAT_SIZE.y;
     congratulation.sendToBack();
-    
+
     player = game.add.sprite( TILE_SIZE, TILE_SIZE, 'tank' );
-    
+
     player.animations.add( 'forward',  [0, 1, 2], ANIMATION_RATE, true );
-    
+
     game.physics.arcade.enable( player );
     player.body.collideWorldBounds = true;
     player.anchor.x = 0.5;
@@ -158,13 +160,13 @@ module.exports = {
 	init: function( elemID ) {
 		return new Promise( (resolve, reject) => {
 			gameCreatedCallback = resolve;
-			game = new Phaser.Game( 
-			 	WIDTH * TILE_SIZE, 
-			 	HEIGHT * TILE_SIZE, 
-			 	Phaser.CANVAS, 
-			 	elemID, { 
-		 			preload: preload, 
-		 			create: create, 
+			game = new Phaser.Game(
+			 	WIDTH * TILE_SIZE,
+			 	HEIGHT * TILE_SIZE,
+			 	Phaser.CANVAS,
+			 	elemID, {
+		 			preload: preload,
+		 			create: create,
 		 			update: update
 		 		}
 	 		);
@@ -229,7 +231,7 @@ module.exports = {
 	    if (player.animations.getAnimation( command.name )) {
 	        player.animations.play( command.name );
 	    }
-	    
+
 	    executionFinishedCallback = done;
 	},
 

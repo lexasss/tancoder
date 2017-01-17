@@ -12,7 +12,7 @@ module.exports = {
         filename: 'app.js',
         library: 'Tancoder'
     },
-    
+
     module: {
         loaders: [
             { test: /\.jade$/, loader: 'pug-html-loader' },
