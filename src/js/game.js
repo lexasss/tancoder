@@ -5,6 +5,7 @@ const ANIMATION_RATE = 5; // frames per s
 const CONGRAT_SIZE = { x: 320, y: 64 } ;
 
 const graphicsPath = 'assets/graphics/';
+const audioPath = 'assets/audio/';
 
 let game;
 let player;
@@ -43,6 +44,8 @@ function preload () {
     game.load.spritesheet( 'congratulation', graphicsPath + 'congrats.png', CONGRAT_SIZE.x, CONGRAT_SIZE.y );
     game.load.spritesheet( 'target', graphicsPath + 'target.png', TILE_SIZE, TILE_SIZE );
     game.load.spritesheet( 'tank', graphicsPath + 'tank.png', TILE_SIZE, TILE_SIZE );
+
+    game.load.audio( 'run', audioPath + 'run.mp3' );
 
     CONGRAT_SIZE.x *= 2;
     CONGRAT_SIZE.y *= 2;
