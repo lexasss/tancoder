@@ -19,6 +19,10 @@ let gameCreatedCallback;
 let executionFinishedCallback;
 //let completedText;
 
+let runSound;
+let tankSound;
+let tankSoundTimer;
+
 const state = {
     velocity: { x: 0, y: 0 },
     location: { x: 0, y: 0 },
@@ -46,6 +50,8 @@ function preload () {
     game.load.spritesheet( 'tank', graphicsPath + 'tank.png', TILE_SIZE, TILE_SIZE );
 
     game.load.audio( 'run', audioPath + 'run.mp3' );
+    game.load.audio( 'shot', audioPath + 'shot.mp3' );
+    game.load.audio( 'tank', audioPath + 'tank.mp3' );
 
     CONGRAT_SIZE.x *= 2;
     CONGRAT_SIZE.y *= 2;
@@ -159,6 +165,14 @@ function finishExecution() {
     executionFinishedCallback = undefined;
 }
 
+function deferTankSound( delay ) {
+	tankSoundTimer = setTimeout( () => {
+		tankSoundTimer = null;
+		tankSound = game.sound.play( 'tank' );
+		deferTankSound( 10000 );
+	}, delay);
+}
+
 module.exports = {
 	init: function( elemID ) {
 		return new Promise( (resolve, reject) => {
@@ -174,6 +188,27 @@ module.exports = {
 		 		}
 	 		);
 		});
+	},
+
+	startExecution: function() {
+		if (!runSound) {
+			runSound = game.sound.play( 'run', 0.4, true );
+		}
+	},
+
+	stopExecution: function() {
+		if (runSound) {
+			runSound.stop();
+			runSound = null;
+		}
+		if (tankSound) {
+			tankSound.stop();
+			tankSound = null;
+		}
+		if (tankSoundTimer) {
+			clearTimeout( tankSoundTimer );
+			tankSoundTimer = null;
+		}
 	},
 
 	execute: function( command, done ) {
@@ -199,6 +234,7 @@ module.exports = {
 				state.velocity = { x: command.velocity, y: 0 };
 				state.location.x += TILE_SIZE;
 			}
+
 			log('forward from', player.x, player.y, 'to', state.location.x, state.location.y);
 		}
 		else if (command.angularVelocity) {
@@ -225,6 +261,8 @@ module.exports = {
 				timers.fire = null;
 				finishExecution();
 			}, command.duration );
+
+			game.sound.play( 'shot' );
 		}
 		else {
 			console.log( 'game.execute: invalid command' );
@@ -235,6 +273,13 @@ module.exports = {
 	        player.animations.play( command.name );
 	    }
 
+		if (command.velocity && !tankSoundTimer) {
+			deferTankSound( 1500 );
+		}
+		else if (!command.velocity && tankSoundTimer) {
+			clearTimeout( tankSoundTimer );
+			tankSoundTimer = null;
+		}
 	    executionFinishedCallback = done;
 	},
 
