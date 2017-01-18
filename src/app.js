@@ -22,6 +22,12 @@ if (window.location.hash.length > 1) {
     }
     catch (ex) { }
 }
+else {
+    const settings = JSON.parse( localStorage.getItem( 'tancoder' ) );
+    if (settings) {
+        levelID = settings.levelID || levelID;
+    }
+}
 
 
 // Initialization
@@ -62,14 +68,7 @@ function executionCompleted() {
             code.reset();
             code.disable();
 
-            if (++levelID < levels.length) {
-                createLevel( levelID );
-                code.enable();
-            }
-            else {
-                game.finish();
-                //instruction.update( new Level( '', '', '', [] ) );
-            }
+            moveToNextLevel();
         });
     }
 
@@ -88,6 +87,26 @@ function resetLevel() {
     const level = levels[ levelID ];
     game.resetLevel( level.startState );
     level.reset( game.sprites(), game.tileSize );
+}
+
+function moveToNextLevel() {
+    if (++levelID < levels.length) {
+        saveSettings();
+        createLevel( levelID );
+        code.enable();
+    }
+    else {
+        game.finish();
+        //instruction.update( new Level( '', '', '', [] ) );
+    }
+}
+
+function saveSettings() {
+    const settings = {
+        levelID: levelID
+    };
+
+    localStorage.setItem( 'tancoder', JSON.stringify( settings ) );
 }
 
 // Exports

@@ -234,7 +234,7 @@ module.exports = [
 
         'bbbbbbbbbbbbbbbbbb' + '\n' +
         'b                b' + '\n' +
-        'b t            t b' + '\n' +
+        'b   t         t  b' + '\n' +
         'b                b' + '\n' +
         'b                b' + '\n' +
         'b      sssss     b' + '\n' +
@@ -244,8 +244,8 @@ module.exports = [
         'b      sssss     b' + '\n' +
         'b                b' + '\n' +
         'b                b' + '\n' +
+        'b   t         t  b' + '\n' +
         'b                b' + '\n' +
-        'b t            t b' + '\n' +
         'b                b' + '\n' +
         'bbbbbbbbbbbbbbbbbb',
 
@@ -259,53 +259,61 @@ module.exports = [
             { name: 'fire( разы = 1 )', description: 'выстрелить' },
         ]
     ),
-    /*
+
     new Level(
-        'Седьмой уровень: повторы',
+        'Восьмой уровень: повторы',
 
-        'bbbbbbbbbbbbbbbbbb' + '\n' +
-        'b                b' + '\n' +
-        'b t            t b' + '\n' +
-        'b                b' + '\n' +
-        'b                b' + '\n' +
-        'b      sssss     b' + '\n' +
-        'b      s   s     b' + '\n' +
-        'b      s p       b' + '\n' +
-        'b      s   s     b' + '\n' +
-        'b      sssss     b' + '\n' +
-        'b                b' + '\n' +
-        'b                b' + '\n' +
-        'b                b' + '\n' +
-        'b t            t b' + '\n' +
-        'b                b' + '\n' +
-        'bbbbbbbbbbbbbbbbbb',
+        'ssssssssssssssssss' + '\n' +
+        'sbbsssssssssssssss' + '\n' +
+        'sbbssss   tsssssss' + '\n' +
+        'sssssss ssssssssss' + '\n' +
+        'sssssssbssssssssss' + '\n' +
+        'sssssss ssssssssss' + '\n' +
+        'ssss    ssssssssss' + '\n' +
+        'ssss sssssssssssss' + '\n' +
+        'ssssbsssssssssssss' + '\n' +
+        'ssss sssssssssssss' + '\n' +
+        's    sssssssssbbbs' + '\n' +
+        's ssssssssssssbbbs' + '\n' +
+        'sbssssssssssssbbbs' + '\n' +
+        's ssssssssssssssss' + '\n' +
+        ' p                ' + '\n' +
+        '                  ',
 
-        '<p>Часто бывает так, что нужно повторять одни и те же команды несколько раз подряд.\
-        Например, чтобы выстрелить с места во все 4 стороны, надо сначала выстрелить,\
-        потом повернуть, потом опять выстрелить, потом опять повернуть, и так далее\
-        пока не будет сделано 4 выстрела и 3 поворота. То есть, надо записать 7 команд.\
-        Но легко увидеть, что всё время повторяются один и те же 2 команды.\
-        <p>Коротко записать повторения команд можно так:\
+        '<p>Кажется, программу на прошлом уровне было очень скучно писать.\
+        Ведь сначала дважды нужно было написать <span class="inline-code">right()</span> и\
+        <span class="inline-code">forward(5)</span>, а потом трижды \
+        <span class="inline-code">right()</span> и <span class="inline-code">forward(10)</span>.\
+        <p>Как раз для такого случая есть специальная инструкция "повтор":\
+        <span class="inline-code">loop() { }</span>.\
+        Инструкция – это как бы "команда для команд". Но она очень похожа на обычную команду – \
+        после неё пишутся скобки в которых надо написать сколько будет повторов.\
+        Но затем нужно ещё написать фигурные скобки <span class="inline-code">{ }</span>,\
+        а между ними написать команды которые надо повторять.\
+        <p>Непонятно? Тогда посмотри как можно было написать программу в прошлом уровне:\
               <pre><code class="js">' +
-                'for (i = 0; i < 4; i += 1) {\n'+
-                '    fire();\n'+
-                '    left();\n'+
+                'loop(2) {\n'+
+                '    right();\n'+
+                '    forward(5);\n'+
+                '}\n'+
+                'loop(3) {\n'+
+                '    right();\n'+
+                '    forward(10);\n'+
                 '}\n'+
             '</code></pre>\
-        Первая строчка означает вот что:\
-        <ul>\
-          <li><span class="inline-code">for ()</span>\
-          <li>\
-          <li>\
-          <li>\
-        </ul>\
-        ',
+        <p>Внимательно прочитай объяснение заново и посмотри пример ещё раз.\
+        А теперь попробуй пройти этот уровень с помощью инструкции <span class="inline-code">loop</span>\
+        и пяти команд.',
+        //<p>Команды <span class="inline-code">right</span> и<span class="inline-code">forward</span>\
+        //находятся между фигурных скобок <span class="inline-code">{ }</span>, но чтобы удобнее\
+        //было читать, каждая из них написана на отдельной строчке.\
 
         [
             { name: 'forward( разы = 1 )', description: 'ехать вперёд' },
             { name: 'left( разы = 1 )', description: 'повернуть налево' },
             { name: 'right( разы = 1 )', description: 'повернуть направо' },
             { name: 'fire( разы = 1 )', description: 'выстрелить' },
+            { name: 'loop( разы ) { }', description: 'повторить' },
         ]
-    ),*/
+    ),
 ];

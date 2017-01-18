@@ -34,6 +34,9 @@ const commands = {
 }
 
 const COMMANDS = Object.keys( commands );
+const INSTRUCTION = [
+    { re: `\\bloop\\s*\\((\\d*)\\)\\s*{`, to: 'for( let i = 0; i < $1; i++) {' }
+];
 const cmdList = [];
 
 module.exports = {
@@ -45,10 +48,16 @@ module.exports = {
             text = text.replace( re, `Tancoder.dispatcher.${cmd}(` );
         });
 
+        INSTRUCTION.forEach( instruction => {
+            const re = new RegExp( instruction.re, 'gm' );
+            text = text.replace( re, instruction.to );
+            console.log(text);
+        });
+
         text = '\
             let ok = true;\
-            try {' + 
-                text + 
+            try {' +
+                text +
             '}\
             catch (err) {\
                 Tancoder.code.error( err );\
@@ -62,8 +71,8 @@ module.exports = {
                 cmdList.length = 0;
             }
         }
-        catch (err) { 
-            Tancoder.code.error( err ); 
+        catch (err) {
+            Tancoder.code.error( err );
             cmdList.length = 0;
         }
 
