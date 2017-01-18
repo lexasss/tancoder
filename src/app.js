@@ -30,7 +30,17 @@ if (this.hljs) {
     hljs.initHighlightingOnLoad();
 }
 
-code.listen( dispatcher.parse, runner.run, resetLevel );
+code.listen( 
+    cbParse = dispatcher.parse, 
+    cbRun = parsed => {
+        runner.run( parsed );
+        game.startExecution();
+    }, 
+    cbReset = () => {
+        game.stopExecution();
+        resetLevel();
+    }
+);
 
 runner.init( game.execute, executionCompleted );
 
@@ -43,6 +53,7 @@ game.init( 'game' ).then( () => {
 
 function executionCompleted() {
     if (game.isLevelCompleted()) {
+        game.stopExecution();
         game.showCongratulation().then( () => {
             code.reset();
             code.disable();
