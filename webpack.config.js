@@ -22,15 +22,16 @@ module.exports = {
     },
 
     plugins: [
-        // new CleanWebpackPlugin( ['./bin/**/*'], {
-        //     verbose: true
-        // }),
-        // new CopyWebpackPlugin([
-        //     { from: './assets', to: './assets' },
-        //     { from: '../libs/**/*', to: './libs' },
-        // ], {
-        //     ignore: [ '*.psd' ]
-        // }),
+        new CleanWebpackPlugin( ['./bin/**/*'], {
+            verbose: true
+        }),
+        new CopyWebpackPlugin([
+            { from: './assets', to: './assets' },
+            { from: '../libs/**/*', to: './libs' },
+            { from: '../favicon/**/*', to: './', flatten: true },
+        ], {
+            ignore: [ '*.psd' ]
+        }),
         new HtmlWebpackPlugin({
             template: './index.jade'
         }),
