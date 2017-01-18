@@ -51,7 +51,6 @@ module.exports = {
         INSTRUCTION.forEach( instruction => {
             const re = new RegExp( instruction.re, 'gm' );
             text = text.replace( re, instruction.to );
-            console.log(text);
         });
 
         text = '\

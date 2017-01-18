@@ -358,19 +358,10 @@ module.exports = {
 		});
 	},
 
-	resetLevel: function( startState, isNewLevel ) {
-		state.location = {
-			x: (startState.cell.x + 0.5) * TILE_SIZE,
-			y: (startState.cell.y + 0.5) * TILE_SIZE,
-		};
-		state.angle = startState.angle;
-
-        player.x = state.location.x;
-	    player.y = state.location.y;
-
-	    player.angle = state.angle;
-
-	  //   if (isNewLevel) {
+	newLevel: function() {
+	    stones.removeAll( true );
+	    boxes.removeAll( true );
+	    targets.removeAll( true );
 	  //   	if (runSound && !runSound.resumed) {
 			// 	runSound.fadeTo( volume = 0.01 );
 			// }
@@ -382,17 +373,42 @@ module.exports = {
 			// 		backSound.play( '', 0, BACK_SOUND_VOLUME );
 	  //   		}
 			// }
-	  //   }
 	},
 
-	sprites: function() {
-		return {
-			player,
-			stones,
-			boxes,
-			targets
+	resetLevel: function( startState, resetKilled ) {
+		state.location = {
+			x: (startState.cell.x + 0.5) * TILE_SIZE,
+			y: (startState.cell.y + 0.5) * TILE_SIZE,
 		};
+		state.angle = startState.angle;
+
+        player.x = state.location.x;
+	    player.y = state.location.y;
+
+	    player.angle = state.angle;
+
+	    sprites.targets.forEach( target => {
+	    	setTimeout( () => {
+	    		target.frame = 0;
+	    	}, 50);
+	    });
+
+	    if (resetKilled) {
+		    sprites.boxes.removeAll( true );
+	    }
 	},
 
-	tileSize: TILE_SIZE
+	createStone: function( col, row ) {
+        const stone = sprites.stones.create( col * TILE_SIZE, row * TILE_SIZE, 'stone' );
+        stone.body.immovable = true;
+	},
+
+	createBox: function( col, row ) {
+        const box = sprites.boxes.create( col * TILE_SIZE, row * TILE_SIZE, 'box' );
+        box.body.immovable = true;
+	},
+
+	createTarget: function( col, row ) {
+        const target = sprites.targets.create( col * TILE_SIZE, row * TILE_SIZE, 'target' );
+	}
 };

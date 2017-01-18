@@ -5,7 +5,7 @@ const css = require('./app.less');
 const runner = require('./js/runner');
 const dispatcher = require('./js/dispatcher');
 const levels = require('./js/levels');
-//Level = require('./js/level');
+// const Level = require('./js/level');
 
 const instruction = require('./components/instruction/instruction');
 const code = require('./components/code/code');
@@ -36,6 +36,12 @@ if (this.hljs) {
     hljs.initHighlightingOnLoad();
 }
 
+levels.forEach( level => {
+    level.onStoneCreate = game.createStone;
+    level.onBoxCreate = game.createBox;
+    level.onTargetCreate = game.createTarget;
+});
+
 code.listen(
     cbParse = dispatcher.parse,
     cbRun = parsed => {
@@ -52,6 +58,7 @@ runner.init(
     execute = game.execute,
     done = executionCompleted
 );
+
 
 game.init( 'game' ).then( () => {
     createLevel( levelID );
@@ -77,16 +84,17 @@ function executionCompleted() {
 
 function createLevel( id ) {
     const level = levels[ id ];
-    level.create( game.sprites(), game.tileSize );
-    game.resetLevel( level.startState, true );
+    game.newLevel();
+    level.create();
+    game.resetLevel( level.startState );
     instruction.update( level );
 }
 
 function resetLevel() {
     runner.stop();
     const level = levels[ levelID ];
-    game.resetLevel( level.startState );
-    level.reset( game.sprites(), game.tileSize );
+    game.resetLevel( level.startState, resetKilled = true );
+    level.reset();
 }
 
 function moveToNextLevel() {

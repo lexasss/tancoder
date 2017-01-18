@@ -9,13 +9,13 @@ class Level {
 			cell: { x: 0, y: 0 },
 			angle: 0
 		};
+
+		this.onStoneCreate = function( col, row ) { };
+		this.onBoxCreate = function( col, row ) { };
+		this.onTargetCreate = function( col, row ) { };
 	}
 
-	create( sprites, tileSize ) {
-	    sprites.stones.removeAll( true );
-	    sprites.boxes.removeAll( true );
-	    sprites.targets.removeAll( true );
-
+	create() {
 	    const rows = this.field.split( '\n' );
 	    rows.forEach( (row, rowIndex) => {
 
@@ -23,15 +23,13 @@ class Level {
 	        chars.forEach( (cell, colIndex) => {
 
 	            if (cell === 's') {
-	                const stone = sprites.stones.create( colIndex * tileSize, rowIndex * tileSize, 'stone' );
-	                stone.body.immovable = true;
+	            	this.onStoneCreate( colIndex, rowIndex );
 	            }
 	            else if (cell === 'b') {
-	                const box = sprites.boxes.create( colIndex * tileSize, rowIndex * tileSize, 'box' );
-	                box.body.immovable = true;
+	            	this.onBoxCreate( colIndex, rowIndex );
 	            }
 	            else if (cell === 't') {
-	                const target = sprites.targets.create( colIndex * tileSize, rowIndex * tileSize, 'target' );
+	            	this.onTargetCreate( colIndex, rowIndex );
 	            }
 	            else if (cell === 'p') {
 	            	this.startState.cell = { x: colIndex, y: rowIndex };
@@ -40,9 +38,7 @@ class Level {
 	    });
 	}
 
-	reset( sprites, tileSize ) {
-	    sprites.boxes.removeAll( true );
-
+	reset() {
 	    const rows = this.field.split( '\n' );
 	    rows.forEach( (row, rowIndex) => {
 
@@ -50,17 +46,10 @@ class Level {
 	        chars.forEach( (cell, colIndex) => {
 
 	            if (cell === 'b') {
-	                const box = sprites.boxes.create( colIndex * tileSize, rowIndex * tileSize, 'box' );
-	                box.body.immovable = true;
+	            	this.onBoxCreate( colIndex, rowIndex );
 	            }
 	        });
 	    });
-
-	    sprites.targets.forEach( target => {
-	    	setTimeout( () => {
-	    		target.frame = 0;
-	    	}, 50);
-	    }, this );
 	}
 }
 
