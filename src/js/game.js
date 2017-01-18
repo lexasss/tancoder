@@ -3,6 +3,8 @@ const HEIGHT = 16;
 const TILE_SIZE = 48;
 const ANIMATION_RATE = 5; // frames per s
 const CONGRAT_SIZE = { x: 320, y: 64 } ;
+const BACK_SOUND_VOLUME = 0.1;
+const EFFECT_SOUND_VOLUME = 0.3;
 
 const graphicsPath = 'assets/graphics/';
 const audioPath = 'assets/audio/';
@@ -19,7 +21,8 @@ let gameCreatedCallback;
 let executionFinishedCallback;
 //let completedText;
 
-let runSound;
+let backSound;
+// let runSound;
 let tankSound;
 let tankSoundTimer;
 
@@ -49,9 +52,26 @@ function preload () {
     game.load.spritesheet( 'target', graphicsPath + 'target.png', TILE_SIZE, TILE_SIZE );
     game.load.spritesheet( 'tank', graphicsPath + 'tank.png', TILE_SIZE, TILE_SIZE );
 
-    game.load.audio( 'run', audioPath + 'run.mp3' );
+    game.load.audio( 'back', audioPath + 'back.mp3' );
+    // game.load.audio( 'run', audioPath + 'run.mp3' );
     game.load.audio( 'shot', audioPath + 'shot.mp3' );
     game.load.audio( 'tank', audioPath + 'tank.mp3' );
+    game.load.audio( 'finished', audioPath + 'finished.mp3' );
+
+    game.load.onLoadComplete.add( () => {
+    	backSound = game.sound.play( 'back', BACK_SOUND_VOLUME, true );
+    	tankSound = game.sound.play( 'tank', EFFECT_SOUND_VOLUME );
+    	if (tankSound) {
+    		tankSound.stop();
+    	}
+    	// runSound = game.sound.play( 'run', 0.01, true );
+    	// runSound.pause();
+    	// runSound.onFadeComplete.add( (obj, volume) => {
+    	// 	if (volume < RUN_SOUND_VOLUME / 2) {
+    	// 		runSound.pause();
+    	// 	}
+    	// });
+    })
 
     CONGRAT_SIZE.x *= 2;
     CONGRAT_SIZE.y *= 2;
@@ -168,8 +188,9 @@ function finishExecution() {
 function deferTankSound( delay ) {
 	tankSoundTimer = setTimeout( () => {
 		tankSoundTimer = null;
-		tankSound = game.sound.play( 'tank' );
-		deferTankSound( 10000 );
+		if (tankSound) {
+			tankSound.play();
+		}
 	}, delay);
 }
 
@@ -191,24 +212,38 @@ module.exports = {
 	},
 
 	startExecution: function() {
-		if (!runSound) {
-			runSound = game.sound.play( 'run', 0.4, true );
-		}
+		// if (backSound) {
+		// 	backSound.pause();
+		// }
+		// if (runSound && runSound.paused) {
+		// 	runSound.resume();
+		// 	runSound.fadeTo( volume = RUN_SOUND_VOLUME );
+		// }
 	},
 
-	stopExecution: function() {
-		if (runSound) {
-			runSound.stop();
-			runSound = null;
+	stopExecution: function( isCompleted ) {
+		// if (!isCompleted && runSound && !runSound.resumed) {
+		// 	runSound.fadeTo( volume = 0.01 );
+		// }
+		if (tankSound && tankSound.isPlaying) {
+			tankSound.fadeOut();
 		}
-		if (tankSound) {
-			tankSound.stop();
-			tankSound = null;
-		}
+
 		if (tankSoundTimer) {
 			clearTimeout( tankSoundTimer );
 			tankSoundTimer = null;
 		}
+
+		// setTimeout( () => {
+		// 	if (backSound) {
+		// 		if (isCompleted) {
+		// 			backSound.stop();
+		// 		}
+		// 		else {
+		// 			backSound.resume();
+		// 		}
+		// 	}
+		// }, 1000);
 	},
 
 	execute: function( command, done ) {
@@ -262,7 +297,7 @@ module.exports = {
 				finishExecution();
 			}, command.duration );
 
-			game.sound.play( 'shot' );
+			game.sound.play( 'shot', EFFECT_SOUND_VOLUME );
 		}
 		else {
 			console.log( 'game.execute: invalid command' );
@@ -273,7 +308,7 @@ module.exports = {
 	        player.animations.play( command.name );
 	    }
 
-		if (command.velocity && !tankSoundTimer) {
+		if (command.velocity && !tankSoundTimer && tankSound && !tankSound.isPlaying) {
 			deferTankSound( 1500 );
 		}
 		else if (!command.velocity && tankSoundTimer) {
@@ -306,6 +341,12 @@ module.exports = {
 	},
 
 	finish: function() {
+		if (backSound) {
+			backSound.fadeOut();
+		}
+
+		game.sound.play( 'finished', BACK_SOUND_VOLUME, true );
+
 		return new Promise( (resolve, reject) => {
 			setTimeout( () => {
 				congratulation.frame = game.cache.getFrameCount( congratulation.key ) - 1;
@@ -317,7 +358,7 @@ module.exports = {
 		});
 	},
 
-	resetLevel: function( startState ) {
+	resetLevel: function( startState, isNewLevel ) {
 		state.location = {
 			x: (startState.cell.x + 0.5) * TILE_SIZE,
 			y: (startState.cell.y + 0.5) * TILE_SIZE,
@@ -328,6 +369,20 @@ module.exports = {
 	    player.y = state.location.y;
 
 	    player.angle = state.angle;
+
+	  //   if (isNewLevel) {
+	  //   	if (runSound && !runSound.resumed) {
+			// 	runSound.fadeTo( volume = 0.01 );
+			// }
+	  //   	if (backSound) {
+	  //   		if (backSound.paused) {
+			// 		backSound.resume();
+	  //   		}
+	  //   		else {
+			// 		backSound.play( '', 0, BACK_SOUND_VOLUME );
+	  //   		}
+			// }
+	  //   }
 	},
 
 	sprites: function() {

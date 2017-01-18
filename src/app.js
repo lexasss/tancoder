@@ -5,7 +5,7 @@ const css = require('./app.less');
 const runner = require('./js/runner');
 const dispatcher = require('./js/dispatcher');
 const levels = require('./js/levels');
-const level = require('./js/level');
+//Level = require('./js/level');
 
 const instruction = require('./components/instruction/instruction');
 const code = require('./components/code/code');
@@ -30,19 +30,22 @@ if (this.hljs) {
     hljs.initHighlightingOnLoad();
 }
 
-code.listen( 
-    cbParse = dispatcher.parse, 
+code.listen(
+    cbParse = dispatcher.parse,
     cbRun = parsed => {
         runner.run( parsed );
         game.startExecution();
-    }, 
+    },
     cbReset = () => {
-        game.stopExecution();
+        game.stopExecution( false );
         resetLevel();
     }
 );
 
-runner.init( game.execute, executionCompleted );
+runner.init(
+    execute = game.execute,
+    done = executionCompleted
+);
 
 game.init( 'game' ).then( () => {
     createLevel( levelID );
@@ -52,8 +55,9 @@ game.init( 'game' ).then( () => {
 // Routines
 
 function executionCompleted() {
-    if (game.isLevelCompleted()) {
-        game.stopExecution();
+    let isCompleted = game.isLevelCompleted();
+
+    if (isCompleted) {
         game.showCongratulation().then( () => {
             code.reset();
             code.disable();
@@ -64,16 +68,18 @@ function executionCompleted() {
             }
             else {
                 game.finish();
-                instruction.update( new Level( '', '', '', [] ) );
+                //instruction.update( new Level( '', '', '', [] ) );
             }
         });
     }
+
+    game.stopExecution( isCompleted );
 }
 
 function createLevel( id ) {
     const level = levels[ id ];
     level.create( game.sprites(), game.tileSize );
-    game.resetLevel( level.startState );
+    game.resetLevel( level.startState, true );
     instruction.update( level );
 }
 
