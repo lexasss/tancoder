@@ -98,7 +98,7 @@ function create () {
 
     player = game.add.sprite( TILE_SIZE, TILE_SIZE, 'tank' );
 
-    player.animations.add( 'forward',  [0, 1, 2], ANIMATION_RATE, true );
+    player.animations.add( 'forward', [0, 1, 2], ANIMATION_RATE, true );
 
     game.physics.arcade.enable( player );
     player.body.collideWorldBounds = true;
@@ -168,7 +168,7 @@ function isExecutionDestinationReached() {
 }
 
 function convertTarget( player, target ) {
-    target.frame = 1;
+	target.animations.play( 'done' );
 }
 
 function checkPlayerAndTargetCollisin( player, target ) {
@@ -387,28 +387,31 @@ module.exports = {
 
 	    player.angle = state.angle;
 
-	    sprites.targets.forEach( target => {
+	    targets.forEach( target => {
 	    	setTimeout( () => {
-	    		target.frame = 0;
-	    	}, 50);
+			    target.animations.play( 'initial' );
+	    	}, 150);
 	    });
 
 	    if (resetKilled) {
-		    sprites.boxes.removeAll( true );
+		    boxes.removeAll( true );
 	    }
 	},
 
 	createStone: function( col, row ) {
-        const stone = sprites.stones.create( col * TILE_SIZE, row * TILE_SIZE, 'stone' );
+        const stone = stones.create( col * TILE_SIZE, row * TILE_SIZE, 'stone' );
         stone.body.immovable = true;
 	},
 
 	createBox: function( col, row ) {
-        const box = sprites.boxes.create( col * TILE_SIZE, row * TILE_SIZE, 'box' );
+        const box = boxes.create( col * TILE_SIZE, row * TILE_SIZE, 'box' );
         box.body.immovable = true;
 	},
 
 	createTarget: function( col, row ) {
-        const target = sprites.targets.create( col * TILE_SIZE, row * TILE_SIZE, 'target' );
+        const target = targets.create( col * TILE_SIZE, row * TILE_SIZE, 'target' );
+	    target.animations.add( 'initial', [0, 1, 2, 3, 4, 5, 6], ANIMATION_RATE, true );
+	    target.animations.add( 'done', [7, 8, 9, 10, 11, 12, 13], ANIMATION_RATE, true );
+	    target.animations.play( 'initial' );
 	}
 };
