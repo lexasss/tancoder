@@ -319,13 +319,16 @@ module.exports = {
 			clearTimeout( tankSoundTimer );
 			tankSoundTimer = null;
 		}
+
 	    executionFinishedCallback = done;
 	},
 
     isLevelCompleted: function() {
     	let allTargetVisited = true;
 	    targets.forEach( target => {
-	        allTargetVisited = allTargetVisited && target.frame === 1;
+	    	const animation = target.animations.currentAnim;
+	    	const isAnimationDone = animation && animation.name === 'done';
+	        allTargetVisited = allTargetVisited && isAnimationDone;
 	    }, this);
 
 	    return allTargetVisited;

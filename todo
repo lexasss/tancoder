@@ -2,3 +2,33 @@
 - next levels:
 	- repeat loops
 	- variables
+
+- debug level 9:
+	- fires aside after left()
+	- do not stop execution after finished
+right(2);
+loop(3) {
+    forward(2);
+    left();
+    forward();
+    fire();
+    forward(4);
+    right(2);
+    forward(5);
+    left();
+    forward(2);
+}
+forward(2);
+right();
+forward(8);
+right();
+loop(3) {
+    forward(2);
+    right();
+    fire();
+    forward(3);
+    right(2);
+    forward(3);
+    right();
+    forward(2);
+}
