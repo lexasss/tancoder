@@ -1,3 +1,5 @@
+'use strict';
+
 const Command = require( './command' );
 
 const GAME_SPEED = 2;
@@ -31,7 +33,7 @@ const commands = {
             cmdList.push( new Command( 'fire', { duration: DURATION } ) );
         }
     },
-}
+};
 
 const COMMANDS = Object.keys( commands );
 const INSTRUCTION = [

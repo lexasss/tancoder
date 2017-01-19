@@ -1,0 +1,9 @@
+{
+	"multistr": true,
+	"evil": true,
+	"globals": {
+		"console": true,
+		"Tancoder": true,
+		"hljs": true
+	}
+}

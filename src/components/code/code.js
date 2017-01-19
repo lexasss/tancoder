@@ -1,3 +1,5 @@
+'use strict';
+
 const css = require('./code.less');
 
 const root = document.querySelector( '#code' );
@@ -18,7 +20,7 @@ let errorLine = -1;
 editor.addEventListener( 'focus', e => {
     error.classList.add( 'hidden' );
     editor.classList.remove( 'errorLine' );
-    errorLine = -1
+    errorLine = -1;
 });
 
 editor.addEventListener( 'input', e => {

@@ -1,10 +1,12 @@
+'use strict';
+
 let commands;
 let execute;
 let done;
 let isStopped = false;
 
 function run( cmd ) {
-    new Promise( function(resolve, reject) { 
+    new Promise( function(resolve, reject) {
     	execute( cmd, resolve );
     } ).then( next ).catch( err => {
         console.log( 'error', err );

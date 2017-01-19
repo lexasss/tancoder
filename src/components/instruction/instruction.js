@@ -1,3 +1,5 @@
+'use strict';
+
 const css = require('./instruction.less');
 
 const root = document.querySelector( '#instruction' );
@@ -17,7 +19,7 @@ module.exports = {
             item.innerHTML = `<span class="inline-code">${cmd.name}</span> - ${cmd.description}`;
             commandList.appendChild( item );
         });
-		
+
 		setTimeout( function() {
 			const codeSnippets = text.querySelectorAll( 'pre code' );
 			for (let i = 0; i < codeSnippets.length; i++) {

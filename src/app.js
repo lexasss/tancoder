@@ -1,3 +1,5 @@
+'use strict';
+
 // Imports
 
 const css = require('./app.less');
@@ -32,7 +34,7 @@ else {
 
 // Initialization
 
-if (this.hljs) {
+if (hljs) {
     hljs.initHighlightingOnLoad();
 }
 
@@ -43,26 +45,26 @@ levels.forEach( level => {
 });
 
 code.listen(
-    cbParse = dispatcher.parse,
-    cbRun = parsed => {
+    dispatcher.parse,   // parse
+    parsed => {         // run
         runner.run( parsed );
         game.startExecution();
     },
-    cbReset = () => {
+    () => {             // reset
         game.stopExecution( false );
         resetLevel();
     }
 );
 
 runner.init(
-    execute = game.execute,
-    done = executionCompleted
+    game.execute,       // execute
+    executionCompleted  // done
 );
 
 
 game.init( 'game' ).then( () => {
     createLevel( levelID );
-})
+});
 
 
 // Routines
@@ -93,7 +95,10 @@ function createLevel( id ) {
 function resetLevel() {
     runner.stop();
     const level = levels[ levelID ];
-    game.resetLevel( level.startState, resetKilled = true );
+    game.resetLevel(
+        level.startState,
+        true        // resetKilled
+    );
     level.reset();
 }
 
@@ -122,4 +127,4 @@ function saveSettings() {
 module.exports = {
     dispatcher: dispatcher.commands,
     code: code
-}
+};

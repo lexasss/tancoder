@@ -1,3 +1,5 @@
+'use strict';
+
 class Level {
 	constructor( name, field, instruction, availableCommands ) {
 		this.name = name;

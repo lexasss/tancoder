@@ -1,3 +1,6 @@
+'use strict';
+/* globals Phaser */
+
 const WIDTH = 18;
 const HEIGHT = 16;
 const TILE_SIZE = 48;
@@ -72,7 +75,7 @@ function preload () {
     	// 		runSound.pause();
     	// 	}
     	// });
-    })
+    });
 
     CONGRAT_SIZE.x *= 2;
     CONGRAT_SIZE.y *= 2;
@@ -281,8 +284,8 @@ module.exports = {
 
 	        state.angularVelocity = command.angularVelocity;
 	        state.angle += state.angularVelocity > 0 ? 90 : -90;
-	        while (state.angle > 180) { state.angle -= 360 };
-	        while (state.angle <-180) { state.angle += 360 };
+	        while (state.angle > 180) { state.angle -= 360; }
+	        while (state.angle <-180) { state.angle += 360; }
 			log('rotate from', player.angle, 'to', state.angle);
 		}
 		else if (command.name === 'fire') {
