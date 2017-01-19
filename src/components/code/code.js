@@ -126,7 +126,7 @@ module.exports = {
             scrollToLine( errorLine );
 
             editor.classList.add( 'errorLine' );
-            editor.style.backgroundPosition = 'left ' + (25 * (errorLine + 0.3) - editor.scrollTop) + 'px';
+            editor.style.backgroundPosition = 'left ' + (25 * (errorLine + 0.2) - editor.scrollTop) + 'px';
 
             //errorLine.style.top = editor.offsetTop - editor.scrollTop + 25 * (err.lineNumber - 0.7) + 'px';
         }

@@ -1,7 +1,8 @@
 const WIDTH = 18;
 const HEIGHT = 16;
 const TILE_SIZE = 48;
-const ANIMATION_RATE = 5; // frames per s
+const TANK_ANIMATION_RATE = 5; // frames per s
+const TARGET_ANIMATION_RATE = 10; // frames per s
 const CONGRAT_SIZE = { x: 320, y: 64 } ;
 const BACK_SOUND_VOLUME = 0.1;
 const EFFECT_SOUND_VOLUME = 0.3;
@@ -98,7 +99,7 @@ function create () {
 
     player = game.add.sprite( TILE_SIZE, TILE_SIZE, 'tank' );
 
-    player.animations.add( 'forward', [0, 1, 2], ANIMATION_RATE, true );
+    player.animations.add( 'forward', [0, 1, 2], TANK_ANIMATION_RATE, true );
 
     game.physics.arcade.enable( player );
     player.body.collideWorldBounds = true;
@@ -410,8 +411,8 @@ module.exports = {
 
 	createTarget: function( col, row ) {
         const target = targets.create( col * TILE_SIZE, row * TILE_SIZE, 'target' );
-	    target.animations.add( 'initial', [0, 1, 2, 3, 4, 5, 6], ANIMATION_RATE, true );
-	    target.animations.add( 'done', [7, 8, 9, 10, 11, 12, 13], ANIMATION_RATE, true );
+	    target.animations.add( 'initial', [0, 1, 2, 3, 4, 5, 6], TARGET_ANIMATION_RATE, true );
+	    target.animations.add( 'done', [7, 8, 9, 10, 11, 12, 13], TARGET_ANIMATION_RATE, true );
 	    target.animations.play( 'initial' );
 	}
 };

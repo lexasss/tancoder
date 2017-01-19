@@ -1,7 +1,7 @@
 @mainColor: #844706;
 
 #instruction {
-    font-size: 18px;
+    font-size: 1.2em;
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
 //    border: 1px solid @color;
@@ -14,7 +14,7 @@
     }
 
     .inline-code {
-        background-color: lighten(@mainColor, 70%);
+        background-color: lighten(@mainColor, 50%);
         color: #444;
         font-family: 'Roboto Mono', monospace;
         padding: 0 0.5em;
@@ -26,14 +26,12 @@
         background-color: @mainColor;
         color: #ffd;
         padding: 0.3em 0.5em;
-        line-height: 1.6em;
+        line-height: 1.4em;
 
         pre {
             font-family: 'Roboto Mono', monospace;
-            font-size: 18px;
-            padding-left: 1em; 
-            maring-top: 0.3em;
-            maring-bottom: 0.3em;
+            font-size: 1em;
+            padding: 0;
         }
     }
 
@@ -45,7 +43,8 @@
     .command-list {
         background-color: @mainColor;
         color: #ffd;
-        padding: 0.3em 0.5em;
+        padding: 0.3em 0.5em 0.3em 2.5em;
+        text-indent: -2em;
         line-height: 1.4em;
 
         .command {

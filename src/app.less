@@ -4,10 +4,18 @@
 @codeWidth: 6;
 @mainColor: #844706;
 
-body {
+html {
     font-size: 16px;
+}
+
+body {
+    font-size: 1em;
     margin: 0;
     padding: 0;
+}
+
+h3 {
+    font-size: 1.3em;
 }
 
 .logo-container {
@@ -20,6 +28,14 @@ body {
         height: 100%;
         text-align: center;
         background: url(img/logo.png) no-repeat center center;
+    }
+
+    @media (max-height: 700px) {
+        height: 48px;
+    }
+
+    @media (max-height: 500px) {
+        height: 40px;
     }
 }
 
@@ -34,46 +50,71 @@ body {
         display: inline-block;
         box-sizing: border-box;
         vertical-align: top;
-        height: calc(@height * @cellSize);
-        min-width: calc(@codeWidth * @cellSize);
-        padding-left: 12px;
-        padding-right: 12px;
+        height: ~"calc(100vh - 70px)";
+        min-width: 17em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
     }
 
     #instruction-container {
         display: inline-block;
         box-sizing: border-box;
         vertical-align: top;
-        padding-right: 12px;
-        max-height: calc(@height * @cellSize);
+        padding-right: 0.5em;
+        max-height: ~"calc(100vh - 70px)";
         overflow-y: scroll;
     }
 
-    @media screen and (max-width: 1600px) {
-        @cellSize: 40px;
+    @media (max-width: 1900px) {
+        @cellSize: 48px;
 
         #game canvas {
             width: calc(@width * @cellSize) !important;
             height: calc(@height * @cellSize) !important;
-        }
-
-        #code-container {
-            height: calc(@height * @cellSize);
-            min-width: calc(@codeWidth * @cellSize);
         }
     }
 
-    @media screen and (max-width: 1200px) {
-        @cellSize: 32px;
+    @media (max-width: 1700px) {
+        @cellSize: 40px;
+
+        font-size: 0.9375em;
 
         #game canvas {
             width: calc(@width * @cellSize) !important;
             height: calc(@height * @cellSize) !important;
         }
+    }
 
-        #code-container {
-            height: calc(@height * @cellSize);
-            min-width: calc(@codeWidth * @cellSize);
+    @media (max-width: 1300px) {
+        @cellSize: 32px;
+
+        font-size: 0.875em;
+
+        #game canvas {
+            width: calc(@width * @cellSize) !important;
+            height: calc(@height * @cellSize) !important;
+        }
+    }
+
+    @media (max-width: 1100px) {
+        @cellSize: 28px;
+
+        font-size: 0.8125em;
+
+        #game canvas {
+            width: calc(@width * @cellSize) !important;
+            height: calc(@height * @cellSize) !important;
+        }
+    }
+
+    @media (max-width: 1000px) {
+        @cellSize: 24px;
+
+        font-size: 0.75em;
+
+        #game canvas {
+            width: calc(@width * @cellSize) !important;
+            height: calc(@height * @cellSize) !important;
         }
     }
 }

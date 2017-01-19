@@ -1,9 +1,9 @@
 @mainColor: #844706;
-@lineSize: 25px;
+@lineSize: 1.3em;
 
 #code {
     position: relative;
-    font-size: 18px;
+    font-size: 1.2em;
     height: 100%;
     box-sizing: border-box;
 
@@ -31,7 +31,7 @@
         height: ~"calc(100% - 5em)";
 
         &.errorLine {
-            background-image: linear-gradient(#ff8080, #ff8080);
+            background-image: linear-gradient(#faa, #faa);
             background-repeat: no-repeat;
             background-attachment: scroll;
             background-size: 100% @lineSize;
@@ -42,7 +42,7 @@
         position: absolute;
         width: 100%;
         bottom: 1.3em;
-        font-size: 16px;
+        font-size: 0.8em;
         max-height: 70%;
         overflow-y: auto;
 
@@ -60,5 +60,9 @@
         position: absolute;
         display: block !important;
         bottom: 0px;
+
+        button {
+            font-size: 1.2em !important;
+        }
     }
 }
