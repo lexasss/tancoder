@@ -156,7 +156,7 @@ function isExecutionDestinationReached() {
 	}
 	else if (state.angularVelocity) {
 		const diff = Math.abs( Math.sin( state.angle * Math.PI / 180 ) - Math.sin( player.angle * Math.PI / 180 ) );
-		if ( diff < 0.05) {
+		if ( diff < 0.005) {
 			const final = state.angle;
 		    timers.rotationCorrection = setTimeout( () => {
 				player.angle = final;
