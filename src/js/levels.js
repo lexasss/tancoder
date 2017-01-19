@@ -103,7 +103,7 @@ module.exports = [
             <pre><code class="js">' +
                 'left(2);\n'+
             '</code></pre>\
-        Для команд <span class="inline-code">right</span> и <span class="inline-code">forward</span>\
+        <p>Для команд <span class="inline-code">right</span> и <span class="inline-code">forward</span>\
         тоже можно написать в скобках число. И тогда танк будет поворачивать и ехать сколько раз,\
         сколько написано между скобок.\
         <p>В этом задании приведи танк на клетку с кружком четыремя командами.\
@@ -302,7 +302,7 @@ module.exports = [
                 '    forward(10);\n'+
                 '}\n'+
             '</code></pre>\
-        Итак, запомним: сначала пишем <span class="inline-code">loop() {</span>,\
+        <p>Итак, запомним: сначала пишем <span class="inline-code">loop() {</span>,\
         потом с новой строчки пишем команды которые повторяются, и наконец пишем <span class="inline-code">}</span>.\
         <p>А теперь попробуй пройти этот уровень с помощью одной инструкции <span class="inline-code">loop</span>\
         и пяти команд. Когда будешь писать программу, всё время посматривай на пример – у тебя должно получиться\
