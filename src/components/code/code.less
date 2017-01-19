@@ -39,12 +39,13 @@
     }
 
     .error {
-        position: absolute;
+        position: fixed;
         width: 100%;
-        bottom: 1.3em;
-        font-size: 0.8em;
-        max-height: 70%;
+        bottom: 0;
+        margin-bottom: 0 !important;
+        max-height: 10em;
         overflow-y: auto;
+        z-index: 1;
 
         &.hidden {
             display: none !important;

@@ -31,6 +31,10 @@ editor.addEventListener( 'scroll', e => {
     }
 });
 
+error.addEventListener( 'click', e => {
+    error.classList.add( 'hidden' );
+});
+
 clear.addEventListener( 'click', e => {
     if (clear.classList.contains( 'disabled' )) {
         return;
@@ -87,6 +91,11 @@ function scrollToLine( line ) {
     }
 }
 
+function translateError( errText ) {
+    let result = errText.replace( 'is not defined', ' – нет такой команды или инструкции' );
+    return result;
+}
+
 updateButtons();
 
 module.exports = {
@@ -118,8 +127,8 @@ module.exports = {
 
     error: function( err ) {
         let msg = err.lineNumber !== undefined ? `Строчка #${err.lineNumber}: ` : '';
-        errorMsg.textContent = msg + err.message;
-        //error.classList.remove( 'hidden' );
+        errorMsg.textContent = msg + translateError( err.message );
+        error.classList.remove( 'hidden' );
 
         if (err.lineNumber !== undefined) {
             errorLine = err.lineNumber - 1;
@@ -127,8 +136,6 @@ module.exports = {
 
             editor.classList.add( 'errorLine' );
             editor.style.backgroundPosition = 'left ' + (25 * (errorLine + 0.2) - editor.scrollTop) + 'px';
-
-            //errorLine.style.top = editor.offsetTop - editor.scrollTop + 25 * (err.lineNumber - 0.7) + 'px';
         }
     }
 };
