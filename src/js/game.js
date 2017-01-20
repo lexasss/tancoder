@@ -5,7 +5,7 @@ const WIDTH = 18;
 const HEIGHT = 16;
 const TILE_SIZE = 48;
 const TANK_ANIMATION_RATE = 5; // frames per s
-const TARGET_ANIMATION_RATE = 10; // frames per s
+const TARGET_ANIMATION_RATE = 20; // frames per s
 const CONGRAT_SIZE = { x: 320, y: 64 } ;
 const BACK_SOUND_VOLUME = 0.1;
 const EFFECT_SOUND_VOLUME = 0.3;
@@ -196,6 +196,14 @@ function deferTankSound( delay ) {
 			tankSound.play();
 		}
 	}, delay);
+}
+
+function getTargetAnimationArray( count ) {
+	const result = [];
+	for (let i = 0; i < count; i++) {
+		result.push( i );
+	}
+	return result;
 }
 
 module.exports = {
@@ -417,8 +425,11 @@ module.exports = {
 
 	createTarget: function( col, row ) {
         const target = targets.create( col * TILE_SIZE, row * TILE_SIZE, 'target' );
-	    target.animations.add( 'initial', [0, 1, 2, 3, 4, 5, 6], TARGET_ANIMATION_RATE, true );
-	    target.animations.add( 'done', [7, 8, 9, 10, 11, 12, 13], TARGET_ANIMATION_RATE, true );
+        const frameCount = game.cache.getFrameCount( 'target' );
+
+	    target.animations.add( 'initial', getTargetAnimationArray( frameCount - 2 ), TARGET_ANIMATION_RATE, true );
+	    target.animations.add( 'done', [frameCount - 1], 1, false );
+
 	    target.animations.play( 'initial' );
 	}
 };
