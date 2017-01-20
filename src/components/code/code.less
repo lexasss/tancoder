@@ -1,5 +1,9 @@
-@mainColor: #844706;
+@mainColor: #000;
+@import "../../common.less";
+
 @lineSize: 1.3em;
+@errorColor: #fbb;
+@executionColor: #bfb;
 
 #code {
     position: relative;
@@ -16,7 +20,7 @@
     }
 
     textarea {
-        background-color: #fec;
+        background-color: lighten(@mainColor, 70%);
 
         color: @mainColor;
         font-family: 'Oxygen Mono', monospace;
@@ -31,7 +35,7 @@
         height: ~"calc(100% - 5em)";
 
         &.errorLine {
-            background-image: linear-gradient(#faa, #faa);
+            background-image: linear-gradient(@errorColor, @errorColor);
 
         background-repeat: no-repeat;
         background-attachment: scroll;
@@ -39,7 +43,7 @@
         }
 
         &.executionLine {
-            background-image: linear-gradient(#afa, #afa);
+            background-image: linear-gradient(@executionColor, @executionColor);
 
         background-repeat: no-repeat;
         background-attachment: scroll;
@@ -74,5 +78,5 @@
         button {
             font-size: 1.2em !important;
         }
-    }
+   }
 }
