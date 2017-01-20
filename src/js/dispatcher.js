@@ -41,6 +41,17 @@ const INSTRUCTION = [
 ];
 const cmdList = [];
 
+let lineNumber;
+
+function lineNumberGenerator( match, p1 ) {
+    return `Tancoder.setExecLine( ${lineNumber++} ); ${p1}`;
+}
+
+function insertLineNumbers( text ) {
+    lineNumber = 0;
+    return text.replace( /^(.*\S+.*)/gm, lineNumberGenerator );
+}
+
 module.exports = {
     parse: function( text ) {
         cmdList.length = 0;
@@ -54,6 +65,8 @@ module.exports = {
             const re = new RegExp( instruction.re, 'gm' );
             text = text.replace( re, instruction.to );
         });
+
+        text = insertLineNumbers( text );
 
         text = '\
             let ok = true;\
@@ -78,6 +91,10 @@ module.exports = {
         }
 
         return cmdList;
+    },
+
+    addExecLine: function( line ) {
+        cmdList.push( new Command( 'executionLine', { execLine: line, isInternal: true } ) );
     },
 
     commands: commands

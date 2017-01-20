@@ -16,6 +16,10 @@ let run;
 let stop;
 
 let errorLine = -1;
+let executionLine = -1;
+
+let lineHeight = 25;
+let textTopOffset = 8;
 
 editor.addEventListener( 'focus', e => {
     error.classList.add( 'hidden' );
@@ -28,8 +32,11 @@ editor.addEventListener( 'input', e => {
 });
 
 editor.addEventListener( 'scroll', e => {
-    if (editor.classList.contains( 'errorLine' )) {
-        editor.style.backgroundPosition = 'left ' + (25 * (errorLine + 0.3) - editor.scrollTop) + 'px';
+    if (errorLine >= 0) {
+        updateHighlightedLineLocation( errorLine );
+    }
+    else if (executionLine >= 0) {
+        updateHighlightedLineLocation( executionLine );
     }
 });
 
@@ -94,8 +101,26 @@ function scrollToLine( line ) {
 }
 
 function translateError( errText ) {
-    let result = errText.replace( 'is not defined', ' – нет такой команды или инструкции' );
+    let result = errText.replace( 'is not defined', ' – что-то здесь не так..' );
     return result;
+}
+
+function updateHighlightedLineLocation( line ) {
+    editor.style.backgroundPosition = 'left ' + (lineHeight * line + textTopOffset - editor.scrollTop) + 'px';
+}
+
+function calcLineHeight() {
+    const textareaStyle = window.getComputedStyle( editor, null );
+    let reNumber = /\d+\.?\d*/;
+    let reResult;
+
+    const lineHeightInPixels = textareaStyle.getPropertyValue( 'line-height' );
+    reResult = reNumber.exec( lineHeightInPixels );
+    lineHeight = +reResult[0];
+
+    const paddingTopInPixels = textareaStyle.getPropertyValue( 'padding-top' );
+    reResult = reNumber.exec( paddingTopInPixels );
+    textTopOffset = +reResult[0];
 }
 
 updateButtons();
@@ -136,8 +161,26 @@ module.exports = {
             errorLine = err.lineNumber - 1;
             scrollToLine( errorLine );
 
+            calcLineHeight();
+
             editor.classList.add( 'errorLine' );
-            editor.style.backgroundPosition = 'left ' + (25 * (errorLine + 0.2) - editor.scrollTop) + 'px';
+            updateHighlightedLineLocation( errorLine );
+        }
+    },
+
+    setExecLine: function( line ) {
+        if (executionLine < 0 && line >= 0) {
+            editor.classList.add( 'executionLine' );
+            calcLineHeight();
+        }
+        else if (executionLine >= 0 && line < 0) {
+            editor.classList.remove( 'executionLine' );
+        }
+
+        executionLine = line;
+
+        if (executionLine >= 0) {
+            updateHighlightedLineLocation( executionLine );
         }
     }
 };

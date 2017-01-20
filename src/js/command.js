@@ -6,6 +6,8 @@ class Command {
 		this.velocity = params.velocity;
 		this.angularVelocity = params.angularVelocity;
 		this.duration = params.duration;
+		this.execLine = params.execLine;
+		this.isInternal = !!params.isInternal;
 	}
 }
 

@@ -51,13 +51,22 @@ code.listen(
         game.startExecution();
     },
     () => {             // reset
+        code.setExecLine( -1 );
         game.stopExecution( false );
         resetLevel();
     }
 );
 
 runner.init(
-    game.execute,       // execute
+    (cmd, resolve) => { // execute
+        if (cmd.isInternal) {
+            executeInternalCommand( cmd );
+            resolve();
+        }
+        else {
+            game.execute( cmd, resolve );
+        }
+    },
     executionCompleted  // done
 );
 
@@ -69,7 +78,15 @@ game.init( 'game' ).then( () => {
 
 // Routines
 
+function executeInternalCommand( cmd ) {
+    if (cmd.name === 'executionLine' ) {
+        code.setExecLine( cmd.execLine );
+    }
+}
+
 function executionCompleted() {
+    code.setExecLine( -1 );
+
     let isCompleted = game.isLevelCompleted();
 
     if (isCompleted) {
@@ -126,5 +143,8 @@ function saveSettings() {
 
 module.exports = {
     dispatcher: dispatcher.commands,
-    code: code
+    code: code,
+    setExecLine: function( line ) {
+        dispatcher.addExecLine( line );
+    }
 };
