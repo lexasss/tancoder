@@ -237,6 +237,8 @@ module.exports = {
 		// if (!isCompleted && runSound && !runSound.resumed) {
 		// 	runSound.fadeTo( volume = 0.01 );
 		// }
+		weapon.killAll();
+
 		if (tankSound && tankSound.isPlaying) {
 			tankSound.fadeOut();
 		}
