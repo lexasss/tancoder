@@ -1,6 +1,7 @@
 'use strict';
 
 const css = require('./code.less');
+const enableEditorUtils = require('./editorUtils.js');
 
 const root = document.querySelector( '#code' );
 const editor = root.querySelector( 'textarea' );
@@ -37,6 +38,15 @@ editor.addEventListener( 'scroll', e => {
     }
     else if (executionLine >= 0) {
         updateHighlightedLineLocation( executionLine );
+    }
+});
+
+editor.addEventListener( 'keydown', e => {
+    if (e.keyCode === 13 && e.ctrlKey) {
+        editor.blur();
+        toggle.click();
+        e.preventDefault();
+        return false;
     }
 });
 
@@ -123,6 +133,7 @@ function calcLineHeight() {
     textTopOffset = +reResult[0];
 }
 
+enableEditorUtils( editor );
 updateButtons();
 
 module.exports = {

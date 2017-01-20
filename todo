@@ -1,4 +1,13 @@
 - next levels:
 	- variables
 - gh-pages branch
-- ctrl-enter to toggle
+- ACE editor
+	- https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js
+	- html
+			<div id="editor"> // code here </div>
+	- js
+		var editor = ace.edit("editor");
+		editor.setTheme("ace/theme/monokai");
+		editor.getSession().setMode("ace/mode/javascript");
+
+		var codeText = editor.getValue();
