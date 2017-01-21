@@ -1,8 +1,9 @@
+- insert level with keyboard keys explanation
 - next levels:
 	- variables
 - gh-pages branch
-- ACE editor
-	- https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js
+- Possible use of ACE editor
+	- script https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js
 	- html
 			<div id="editor"> // code here </div>
 	- js
