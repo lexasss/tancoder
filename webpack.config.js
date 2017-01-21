@@ -11,7 +11,7 @@ module.exports = {
     context: path.join(__dirname, 'src'),
     entry: './app.js',
     output: {
-        path: './bin',
+        path: './',
         filename: 'app.js',
         library: 'Tancoder'
     },
@@ -25,7 +25,9 @@ module.exports = {
     },
 
     plugins: [
-        new CleanWebpackPlugin( ['./bin/**/*'], {
+        new CleanWebpackPlugin( [
+            './assets',
+        ], {
             verbose: false
         }),
         new CopyWebpackPlugin([
