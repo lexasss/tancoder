@@ -17,7 +17,7 @@ const game = require('./js/game');
 
 // Variables
 
-const settings = {
+let settings = {
     levelID: 0
 };
 
