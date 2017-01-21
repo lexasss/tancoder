@@ -17,18 +17,18 @@ const game = require('./js/game');
 
 // Variables
 
-let levelID = 0;
+const settings = {
+    levelID: 0
+};
+
 if (window.location.hash.length > 1) {
     try {
-        levelID = Math.max( Math.min( +window.location.hash.substring(1) - 1, levels.length), 0 );
+        settings.levelID = Math.max( Math.min( +window.location.hash.substring(1) - 1, levels.length), 0 );
     }
     catch (ex) { }
 }
 else {
-    const settings = JSON.parse( localStorage.getItem( 'tancoder' ) );
-    if (settings) {
-        levelID = settings.levelID || levelID;
-    }
+    settings = JSON.parse( localStorage.getItem( 'tancoder' ) ) || settings;
 }
 
 
@@ -72,7 +72,7 @@ runner.init(
 
 
 game.init( 'game' ).then( () => {
-    createLevel( levelID );
+    createLevel( settings.levelID );
 });
 
 
@@ -111,7 +111,7 @@ function createLevel( id ) {
 
 function resetLevel() {
     runner.stop();
-    const level = levels[ levelID ];
+    const level = levels[ settings.levelID ];
     game.resetLevel(
         level.startState,
         true        // resetKilled
@@ -120,9 +120,9 @@ function resetLevel() {
 }
 
 function moveToNextLevel() {
-    if (++levelID < levels.length) {
+    if (++settings.levelID < levels.length) {
         saveSettings();
-        createLevel( levelID );
+        createLevel( settings.levelID );
         code.enable();
     }
     else {
@@ -132,10 +132,6 @@ function moveToNextLevel() {
 }
 
 function saveSettings() {
-    const settings = {
-        levelID: levelID
-    };
-
     localStorage.setItem( 'tancoder', JSON.stringify( settings ) );
 }
 

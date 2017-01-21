@@ -6,14 +6,13 @@ var webpack = require('webpack');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const isDev = NODE_ENV === 'development';
-const suffix = (isDev ? '' : '.min') + '.js';
 
 module.exports = {
     context: path.join(__dirname, 'src'),
     entry: './app.js',
     output: {
         path: './bin',
-        filename: 'app' + suffix,
+        filename: 'app.js',
         library: 'Tancoder'
     },
 
@@ -53,15 +52,4 @@ if (isDev) {
         strict: 'global',
         browser: true
     };
-}
-else {
-    module.exports.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-                unsafe: true
-            },
-            lint: false
-        })
-    );
 }
